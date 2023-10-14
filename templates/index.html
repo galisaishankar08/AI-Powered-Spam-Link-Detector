@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="/static/favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Stay one step ahead of malicious links with LinkAlert"
+    />
+    <link rel="apple-touch-icon" href="/static/logo192.png" />
+    <link rel="manifest" href="/static/manifest.json" />
+    <link
+      href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/static/css/index.css">
+    <title>LinkAlert</title>
+  </head>
+  <body>
+    <main class="">
+      <nav class="p-10 grid grid-cols-1 gap-5 justify-center items-center md:grid-cols-3 lg:grid-cols-4">
+        <img src="/static/images/linkalert-logo.png" alt="Logo" class="w-fit" />
+        <form method="post" class="relative col-span-2 flex items-center">
+          <input type="url" placeholder="URL, Domain" class="pl-4 pr-14 py-4 h-fit w-full rounded-l-3xl bg-white outline-none text-black md:text-lg lg:text-xl" name="url" id="url"/>
+          <label class="bg-blue-900 flex items-center py-5 lg:py-6 px-4 rounded-r-3xl cursor-pointer">
+            <input hidden type="submit"/>
+            <i class="fa fa-search text-black text-bold" aria-hidden="true"></i>
+          </label>
+        </form>
+    </nav>
+
+    <div class="flex justify-center">
+      <div class="bg-blue-900  rounded-2xl h-fit md:px-3 py-5 lg:w-1/2">
+        {% if not result %}
+        <div class="text-white text-left p-5">
+          <h1 class="text-green-300 text-2xl font-bold mb-2">
+            What is LinkAlert?
+          </h1>
+          <p class="text-lg font-medium">
+            LinkAlert is a powerful tool that helps you stay safe while
+            browsing the web. It works by scanning links and URLs in real-time
+            to detect any potential security threats. Whether it's a phishing
+            scam or a malware-laden website, LinkAlert will alert you to the
+            danger and give you the option to avoid it.
+          </p>
+        </div>
+        {% else %}
+        <h1>{{result['is_spam']}}</h1>
+        {% endif %}
+      </div>
+    </div>
+    </div>
+  </body>
+</html>
