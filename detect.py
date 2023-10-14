@@ -1,5 +1,9 @@
 import vt
 import nest_asyncio
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 class Detect_Url():
@@ -8,7 +12,7 @@ class Detect_Url():
 
     def detect(self):
         # Your VirusTotal API key
-        API_KEY = '01f27a93263f296b3565a2dfeae44d7e38df5da9895f22e5a8e0988d689e4547'
+        API_KEY = os.getenv('API_KEY')
 
         # Initialize the VirusTotal client
         # vt_client = vt.Client(API_KEY)

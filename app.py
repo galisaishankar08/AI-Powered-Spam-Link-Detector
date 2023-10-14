@@ -1,5 +1,6 @@
 from flask import *
 from detect import Detect_Url
+
 app = Flask(__name__)
 
 
@@ -15,7 +16,7 @@ def scan():
         is_spam = Detect_Url(url).run()
 
         res = {
-            'is_spam' : is_spam,
+            'is_spam': is_spam,
         }
         return render_template("index.html", result=res)
     return redirect('/')
