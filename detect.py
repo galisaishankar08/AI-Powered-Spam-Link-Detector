@@ -36,6 +36,7 @@ class Detect_Url():
 
         # Convert the URL information to a dictionary
         du = url.to_dict()
+        # print(du)
 
         # Get the last analysis results
         lar = du.get('attributes', {}).get('last_analysis_results')
@@ -75,7 +76,7 @@ class Detect_Url():
         total_threats = sum(t for t in only_threats.values())
 
         # Create a dictionary containing the extracted data
-        extracted_data = {
+        self.extracted_data = {
             'threats': threats,
             'total_type_of_threats': total_type_of_threats,
             'redirection_chain_count': rcc,
@@ -83,25 +84,44 @@ class Detect_Url():
         }
 
         # Determine if the URL is malicious based on specific criteria
-        if extracted_data.get('threats', {}).get('malware') > 0:
+        if self.extracted_data.get('threats', {}).get('malware') > 0:
             return True
-        elif extracted_data.get('threats', {}).get('phishing') > 3:
+        elif self.extracted_data.get('threats', {}).get('phishing') > 3:
             return True
-        elif extracted_data.get('redirection_chain_count') > 3:
+        elif self.extracted_data.get('redirection_chain_count') > 3:
             return True
-        elif extracted_data.get('total_type_of_threats') > 3:
+        elif self.extracted_data.get('total_type_of_threats') > 3:
             return True
-        elif extracted_data.get('total_threats') > 5:
+        elif self.extracted_data.get('total_threats') > 5:
             return True
 
         # If none of the criteria match, return False
-        return False
-
+        return False, self.extracted_data
+    
     def run(self):
         try:
-            is_malicious = self.detect()
+            is_malicious, data = self.detect()
+
+            only_threats = data['threats'].copy()
+            del only_threats['unrated']
+            del only_threats['clean']
+
+            # Count the total number of distinct threat types
+            only_threat = []
+            for i in only_threats:
+                if only_threats[i] > 0:
+                    only_threat.append(i)
+            analysed_data = {
+                'url' : self.url,
+                'threats': only_threat,
+                'redirection_chain_count': data['redirection_chain_count']
+            }
+
             # Return whether the URL is malicious (True) or not (False)
-            return is_malicious
+            return is_malicious, analysed_data
         except Exception as e:
-            # print(e)
+            print(e)
             return ''
+
+is_spam = Detect_Url('http://bomberospuertomontt.cl/modules/0299970236/105328892193242/index2.php').run()
+print(is_spam)
