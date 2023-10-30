@@ -49,13 +49,16 @@
         </div> -->
         <!-- {% else %} -->
         <div class="grid justify-center bg-gray-500 bg-opacity-50 rounded-xl">
-          <h1><span class="text-2xl text-white">Title:</span> {{result['is_spam']}}</h1>
-          <h1><span class="text-2xl text-white">URL:</span> {{result['is_spam']}}</h1>
+          <h1><span class="text-2xl text-white">URL:</span> {{result['data']['url']}}</h1>
+          <h1><span class="text-2xl text-white">Is Spam:</span> {{result['is_spam']}}</h1>
+          <h1><span class="text-2xl text-white">Rediction Count:</span> {{result['data']['redirection_chain_count']}}</h1>
 
           <h1 class="text-2xl text-white">Threats:</h1>
           <ul class="flex gap-5 text-white text-lg mt-3">
-            <li class="rounded bg-red-600 h-fit w-fit p-1 text-center">Malicious</li>
-            <li class="rounded bg-red-600 h-fit w-fit p-1 text-center">Phishing</li>
+            {%for threat in result['data']['threats']%} 
+              <li class="rounded bg-red-600 h-fit w-fit p-1 text-center">threat</li>
+<!--               <li class="rounded bg-red-600 h-fit w-fit p-1 text-center">Phishing</li> -->
+            {%endfor%}
           </ul>
           <!-- <ul className="grid gap-2 md:grid-cols-3  text-white">
               <li className="text-lg bg-red-600 rounded-2xl px-2 py-1 w-fit">Malicious</li>
