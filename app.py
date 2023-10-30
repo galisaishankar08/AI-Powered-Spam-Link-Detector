@@ -13,10 +13,11 @@ def index():
 def scan():
     if request.method == "POST":
         url = request.form["url"]
-        is_spam = Detect_Url(url).run()
+        is_spam, data = Detect_Url(url).run()
 
         res = {
             'is_spam': is_spam,
+            'data': data,
         }
         return render_template("index.html", result=res)
     return redirect('/')
