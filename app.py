@@ -14,7 +14,7 @@ def scan():
     if request.method == "POST":
         url = request.form["url"]
         res = UrlFeatureExtract(url).run()
-        print(res)
+
         return render_template("index.html", result=res)
     return redirect('/')
 
@@ -37,7 +37,7 @@ def api():
     if request.json['url']:
         url = str(request.json['url'])
         res = UrlFeatureExtract(url).run()
-        if res['is_vulnerable']:
+        if res:
             return 'True'
         return 'False'
     return "Error"
