@@ -1,5 +1,5 @@
 from flask import *
-from detect import Detect_Url
+from detect import UrlFeatureExtract
 
 app = Flask(__name__)
 
@@ -13,11 +13,8 @@ def index():
 def scan():
     if request.method == "POST":
         url = request.form["url"]
-        is_spam = Detect_Url(url).run()
-
-        res = {
-            'is_spam': is_spam,
-        }
+        res = UrlFeatureExtract(url).run()
+        print(res)
         return render_template("index.html", result=res)
     return redirect('/')
 
@@ -26,8 +23,8 @@ def scan():
 def vefify():
     url = request.args.get('url')
     if url:
-        is_spam_url = Detect_Url(url).run()
-        if is_spam_url:
+        is_spam_url = UrlFeatureExtract(url).run()
+        if is_spam_url['is_vulnerable']:
             return render_template('warning.html')
 
         return redirect(url)
@@ -39,11 +36,16 @@ def api():
     print(jsonify(request.json))
     if request.json['url']:
         url = str(request.json['url'])
-        res = Detect_Url(url).run()
-        if res:
+        res = UrlFeatureExtract(url).run()
+        if res['is_vulnerable']:
             return 'True'
         return 'False'
     return "Error"
+
+
+@app.route('/blogs')
+def blogs():
+    return render_template('blogs.html')
 
 
 if __name__ == '__main__':

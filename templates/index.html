@@ -34,7 +34,7 @@
 
     <div class="flex justify-center">
       <div class="bg-blue-900  rounded-2xl h-fit md:px-3 py-5 lg:w-1/2">
-        <!-- {% if not result %}
+        {% if not result %}
         <div class="text-white text-left p-5">
           <h1 class="text-green-300 text-2xl font-bold mb-2">
             What is LinkAlert?
@@ -46,16 +46,19 @@
             scam or a malware-laden website, LinkAlert will alert you to the
             danger and give you the option to avoid it.
           </p>
-        </div> -->
-        <!-- {% else %} -->
+        </div>
+        {% else %}
         <div class="grid justify-center bg-gray-500 bg-opacity-50 rounded-xl">
-          <h1><span class="text-2xl text-white">Title:</span> {{result['is_spam']}}</h1>
-          <h1><span class="text-2xl text-white">URL:</span> {{result['is_spam']}}</h1>
+          <h1><span class="text-2xl text-white">URL:</span> {{result['url']}}</h1>
+          <h1><span class="text-2xl text-white">Is Spam:</span> {{result['is_vulnerable']}}</h1>
+          <h1><span class="text-2xl text-white">Rediction Count:</span> {{result['redirection_chain_count']}}</h1>
 
           <h1 class="text-2xl text-white">Threats:</h1>
           <ul class="flex gap-5 text-white text-lg mt-3">
-            <li class="rounded bg-red-600 h-fit w-fit p-1 text-center">Malicious</li>
-            <li class="rounded bg-red-600 h-fit w-fit p-1 text-center">Phishing</li>
+            {%for threat in result['threats']%} 
+              <li class="rounded bg-red-600 h-fit w-fit p-1 text-center">{{threat}}</li>
+<!--               <li class="rounded bg-red-600 h-fit w-fit p-1 text-center">Phishing</li> -->
+            {%endfor%}
           </ul>
           <!-- <ul className="grid gap-2 md:grid-cols-3  text-white">
               <li className="text-lg bg-red-600 rounded-2xl px-2 py-1 w-fit">Malicious</li>
@@ -63,9 +66,16 @@
           </ul> -->
         </div>
 
-        <!-- {% endif %} -->
+        {% endif %}
       </div>
     </div>
     </div>
+
+    <!-- Footer -->
+    <footer class="mt-5 bg-blue-500 text-white text-center p-4">
+      <div class="container mx-auto">
+        <p>&copy; 2023 Link Alert</p>
+      </div>
+    </footer>
   </body>
 </html>
