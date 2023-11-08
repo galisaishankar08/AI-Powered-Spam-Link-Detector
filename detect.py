@@ -179,6 +179,20 @@ class UrlFeatureExtract(object):
 
             features['threats'] = only_threats
 
+            threats = sc_data.get('threats')
+            # Calculate the total number of safe and unsafe threats
+            safe_threats = threats['clean'] + threats['unrated']
+            unsafe_threats = sum(threats.values()) - safe_threats
+
+            # Calculate the percentage of safe and unsafe threats
+            total_threats = safe_threats + unsafe_threats
+            safe_percentage = (safe_threats / total_threats *
+                               100) if total_threats != 0 else 0
+            unsafe_percentage = (
+                unsafe_threats / total_threats * 100) if total_threats != 0 else 0
+
+            features['safe_percentage'] = safe_percentage
+            features['unsafe_percentage'] = unsafe_percentage
             return features
         except Exception as e:
             print(e)

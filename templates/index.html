@@ -17,6 +17,7 @@
     />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/static/css/index.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <title>LinkAlert</title>
   </head>
   <body>
@@ -49,14 +50,35 @@
         </div>
         {% else %}
         <div class="grid justify-center bg-gray-500 bg-opacity-50 rounded-xl">
-          <h1><span class="text-2xl text-white">URL:</span> {{result['url']}}</h1>
-          <h1><span class="text-2xl text-white">Is Spam:</span> {{result['is_vulnerable']}}</h1>
-          <h1><span class="text-2xl text-white">Rediction Count:</span> {{result['redirection_chain_count']}}</h1>
+          {% if result['is_vulnerable'] %}
+            <div class="bg-white h-fit text-center my-3 rounded-xl">
+              <h1 class="text-3xl text-red-600 mb-4">This is a Spam Link</h1>
+              <p class="text-red-500">Do not visit this link as it may be harmful.</p>
+            </div>
+          {% else %}
+          <div class="bg-white h-fit text-center my-3 rounded-xl"></div>
+              <h1 class="text-3xl text-green-400 mb-4">Safe Content</h1>
+              <p class="text-green-500">You are can browse safely. Enjoy your content.</p>
+          </div>
+          {% endif %}
 
+          <h1><span class="text-2xl text-white">URL:</span> {{result['url']}}</h1>
+          <!-- <h1><span class="text-2xl text-white">Is Spam:</span> {{result['is_vulnerable']}}</h1> -->
+          <h1><span class="text-2xl text-white">Rediction Count:</span> {{result['redirection_chain_count']}}</h1>
+          <h1><span class="text-2xl text-white">Safe Percentage:</span> {{result['safe_percentage']}}%</h1>
+          <h1><span class="text-2xl text-white">Unsafe Percentage:</span> {{result['unsafe_percentage']}}%</h1>
+
+          <!-- <div class="h-4 bg-red-500 my-3">
+            <div class="h-full w-[{{ result['safe_percentage']}}%] bg-green-600"></div>
+          </div> -->
+
+          <progress id="file" class="bg-red-500" value="{{result['safe_percentage']}}" max="100"> {{result['safe_percentage']}}%</progress>
+          
+          {% if result['is_vulnerable'] %}
           <h1 class="text-2xl text-white">Threats:</h1>
           <ul class="flex gap-5 text-white text-lg my-3">
             {%for threat in result['threats']%} 
-              <li class="rounded bg-red-600 h-fit w-fit p-1 text-center">{{threat}}</li>
+              <li class="rounded bg-red-600 h-fit w-fit p-1 text-center my-2">{{threat}}</li>
 <!--               <li class="rounded bg-red-600 h-fit w-fit p-1 text-center">Phishing</li> -->
             {%endfor%}
           </ul>
@@ -66,6 +88,10 @@
           </ul> -->
         </div>
 
+        <div style="width: 80%; margin: 0 auto;" class="my-3">
+          <canvas id="pieChart"></canvas>
+        </div>
+        {% endif %}
         {% endif %}
       </div>
     </div>
@@ -77,5 +103,28 @@
         <p>&copy; 2023 Link Alert</p>
       </div>
     </footer>
+
+    {% if result %}
+    <script>
+      var ctx = document.getElementById('pieChart').getContext('2d');
+      var labels = ['malware', 'phishing', 'suspicious', 'malicious'];
+      var data = ['{{data[0]}}', '{{data[1]}}', '{{data[2]}}', '{{data[3]}}'];
+
+      var pieChart = new Chart(ctx, {
+          type: 'pie',
+          data: {
+              labels: labels,
+              datasets: [{
+                  data: data,
+                  backgroundColor: [
+                      'rgb(255, 99, 132)',
+                      'rgb(75, 192, 192)',
+                      'rgb(255, 205, 86)'
+                  ],
+              }]
+          },
+      });
+  </script>
+  {% endif %}
   </body>
 </html>

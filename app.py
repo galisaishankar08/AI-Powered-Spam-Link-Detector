@@ -14,8 +14,9 @@ def scan():
     if request.method == "POST":
         url = request.form["url"]
         res = UrlFeatureExtract(url).run()
-
-        return render_template("index.html", result=res)
+        data = list(res['threats'].values())
+        print(data)
+        return render_template("index.html", result=res, data=data)
     return redirect('/')
 
 
