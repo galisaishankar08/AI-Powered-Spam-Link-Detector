@@ -9,7 +9,6 @@ charset-normalizer==3.3.0
 click==8.1.7
 colorama==0.4.6
 cssselect==1.2.0
-dotenv==0.0.5
 Flask==3.0.0
 frozenlist==1.4.0
 idna==3.4
